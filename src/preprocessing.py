@@ -15,7 +15,7 @@ from collections import Counter
 import torch
 from torch.utils.data import Dataset, DataLoader
 from conllu import parse_incr
-
+from dotenv import load_dotenv
 # ---------------------------------------------------------------------
 # Special tokens
 # ---------------------------------------------------------------------
@@ -120,8 +120,8 @@ def encode_sentences(sentences, word2idx, tag2idx):
     Encode sentences as lists of word IDs and tag IDs.
 
     Notes:
-        - Manual encoding is preferred over sklearn LabelEncoder
-        - Ensures stability across train/dev/test splits
+        - Manual encoding is preferred over sklearn LabelEncoder because it 
+        ensures stability across train/dev/test splits
     """
     encoded = []
 
