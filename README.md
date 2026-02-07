@@ -28,7 +28,8 @@ UD_DATA_PATH=/home/bagga/Desktop/pos_ud_project/data/raw/allzip/ud-treebanks-v2.
 ### For the Instructor
 
 When testing this project, please:
-1. Download the UD Treebanks v2.17 dataset
+1. Download the UD Treebanks v2.17 dataset from: 
+`https://lindat.mff.cuni.cz/repository/items/b4fcb1e0-f4b2-4939-80f5-baeafda9e5c0`
 2. Extract it to your preferred location
 3. Create a `.env` file in the project root
 4. Set `UD_DATA_PATH` to point to your `UD_English-EWT` directory
