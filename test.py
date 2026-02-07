@@ -4,6 +4,9 @@ from conllu import parse_incr
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+import torch
+import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
 
 
 # %% [markdown]
@@ -80,9 +83,9 @@ def transform_sentences(sentences, flat=False):
 
 # %%
 # converting all sentences to X, y form
-X_train, y_train = transform_sentences(train_sentences, flat=True)
-X_dev, y_dev = transform_sentences(dev_sentences, flat=True)
-X_test, y_test = transform_sentences(test_sentences, flat=True)
+X_train, y_train = transform_sentences(train_sentences, flat=False)
+X_dev, y_dev = transform_sentences(dev_sentences, flat=False)
+X_test, y_test = transform_sentences(test_sentences, flat=False)
 
 
 # %%
@@ -94,33 +97,133 @@ for i in range(10):
 # %%
 #building a vocabulary
 UNK = "<UNK>"
-word_vocab = {UNK: 0}
-for w in X_train:
-    if w not in word_vocab:
-        word_vocab[w] = len(word_vocab)
+PAD = "<PAD>"
 
+def build_vocab(X_train):
+    word_vocab = {"<PAD>": 0, "<UNK>": 1}
+    for sentence in X_train:
+        for w in sentence:
+            if w not in word_vocab:
+                word_vocab[w] = len(word_vocab)
+    return word_vocab
+
+word_vocab = build_vocab(X_train)
 
 # %%
-def encode(X_train):
-    return [word_vocab.get(w, word_vocab[UNK]) for w in X_train]
+def encode(X, word_vocab):
+    return [[word_vocab.get(w, word_vocab[UNK]) for w in sentence] for sentence in X]
 
 
 # %%
 label_encoder = LabelEncoder()
-label_encoder.fit(y_train)
-y_train_enc = label_encoder.transform(y_train)
+label_encoder.fit([tag for sentence in y_train for tag in sentence])
 
 
 # %%
-# Training
-X_train_enc = np.array(encode(X_train)).reshape(-1, 1)
-clf = LogisticRegression(max_iter=500, random_state=42)
-clf.fit(X_train_enc, y_train_enc)
+# Data encoding
+X_train_enc = encode(X_train, word_vocab)
+y_train_enc = [label_encoder.transform(sentence).tolist() for sentence in y_train]
+X_dev_enc = encode(X_dev, word_vocab)
+y_dev_enc = [label_encoder.transform(sentence).tolist() for sentence in y_dev]
+
 
 # %%
-#predictions and evaluation
+# Building DataLoaders
 
-X_dev_enc = np.array(encode(X_dev)).reshape(-1, 1)
-y_dev_enc = label_encoder.transform(y_dev)
-print("Accuracy (dev):", clf.score(X_dev_enc, y_dev_enc))
+class POSDataset(Dataset):
+    def __init__(self, X, y):
+        self.X = X
+        self.y = y
+
+    def __len__(self):
+        return len(self.X)
+
+    def __getitem__(self, i):
+        return (
+            torch.tensor(self.X[i], dtype=torch.long),
+            torch.tensor(self.y[i], dtype=torch.long),
+            len(self.X[i]),
+        )
+    
+
+def collate_fn(batch):
+    word_ids, tag_ids, lengths = zip(*batch)
+    word_ids = torch.nn.utils.rnn.pad_sequence(word_ids, batch_first=True, padding_value=0)
+    tag_ids = torch.nn.utils.rnn.pad_sequence(tag_ids, batch_first=True, padding_value=-100)
+    lengths = torch.tensor(lengths, dtype=torch.long)
+    return word_ids, tag_ids, lengths
+
+train_dataset = POSDataset(X_train_enc, y_train_enc)
+train_loader = DataLoader(train_dataset, batch_size = 64, shuffle=True, collate_fn=collate_fn)
+dev_dataset = POSDataset(X_dev_enc, y_dev_enc)
+dev_loader = DataLoader(dev_dataset, batch_size = 64, shuffle=True, collate_fn=collate_fn)
+
+
+#%%
+# Model
+
+class BiLSTMPOSTagger(nn.Module):
+    def __init__(self, vocab_size, embedding_dim, hidden_dim, num_classes, padding_idx=0):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=padding_idx)
+        self.lstm = nn.LSTM(
+            embedding_dim,
+            hidden_dim,
+            batch_first=True,
+            bidirectional=True,
+            num_layers=1
+        )
+        self.output_layer = nn.Linear(2 * hidden_dim, num_classes)
+
+    def forward(self, word_ids):
+        #word_ids is of shape (batch, seq_len)
+        emb = self.embedding(word_ids)
+        post_lstm, _ = self.lstm(emb)
+        logits = self.output_layer(post_lstm)
+        return logits
+# %%
+#Model Training
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+vocab_size = len(word_vocab)
+n_classes = len(label_encoder.classes_)
+emb_dim = 128
+hidden_dim = 128
+
+model = BiLSTMPOSTagger(vocab_size, emb_dim, hidden_dim, n_classes, padding_idx=0).to(device)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+criterion = nn.CrossEntropyLoss(ignore_index=-100) #ignoring padding index
+
+def training(model, loader, optimizer, criterion, device):
+    model.train()
+    epoch_loss = 0.0
+    for word_ids, tag_ids, lengths in loader:
+        word_ids, tag_ids = word_ids.to(device), tag_ids.to(device)
+        logits = model(word_ids)
+        loss = criterion(logits.view(-1, n_classes), tag_ids.view(-1))
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        epoch_loss += loss.item()
+    return epoch_loss / len(loader)
+
+def evaluate(model, loader, device):
+    model.eval()
+    correct, total = 0, 0
+    with torch.no_grad():
+        for word_ids, tag_ids, lengths in loader:
+            word_ids, tag_ids = word_ids.to(device), tag_ids.to(device)
+            logits = model(word_ids)
+            pred = logits.argmax(dim=-1)
+            mask = tag_ids != -100
+            correct += (pred[mask] == tag_ids[mask]).sum().item()
+            total += mask.sum().item()
+    return correct / total if total else 0.0
+
+
+num_epochs = 10
+for epoch in range(num_epochs):
+    loss = training(model, train_loader, optimizer, criterion, device)
+    acc = evaluate(model, dev_loader, device)
+    print(f"Epoch {epoch+1}/{num_epochs}  loss={loss:.4f}  dev_acc={acc:.4f}")
 # %%

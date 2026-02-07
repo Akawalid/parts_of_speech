@@ -1,3 +1,4 @@
 conllu
 scikit-learn
 numpy
+torch
