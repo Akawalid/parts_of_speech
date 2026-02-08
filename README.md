@@ -132,5 +132,6 @@ Trained Model
 
 ## What comes next (ordred wrt to priority)
 - Adapt the model to be multilingual.
-- Orgnize better the functions by creating utilities files (for data, training, model?...).
+- put the hyperparameters inside the config file.
 - Optimize the hyperparameters using DeepHyper to improve the performance.
+- Orgnize better the functions by creating utilities files (for data, training, model?...).
