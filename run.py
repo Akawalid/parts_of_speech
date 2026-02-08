@@ -1,25 +1,17 @@
 # run.py
-import torch
-from src.model import BiLSTMPOSTagger, train_model
-from src.data import get_dataloaders, build_vocab_and_labels
+# %%
+"""
+Entry point for training the POS tagging model.
+Simply calls the main() function from src.train.
+"""
 
-# Device
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+import sys
+import os
 
-# Data
-train_loader, dev_loader, word_vocab, label_encoder = get_dataloaders()
+# Ensure src is in path
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-# Model
-vocab_size = len(word_vocab)
-n_classes = len(label_encoder.classes_)
-emb_dim = 128
-hidden_dim = 128
+from src.train import main
 
-model = BiLSTMPOSTagger(vocab_size, emb_dim, hidden_dim, n_classes).to(device)
-
-# Optimizer & loss
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
-criterion = torch.nn.CrossEntropyLoss(ignore_index=-100)
-
-# Train
-train_model(model, train_loader, dev_loader, optimizer, criterion, device, n_classes, num_epochs=10)
+if __name__ == "__main__":
+    main()
