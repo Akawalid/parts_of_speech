@@ -1,6 +1,6 @@
-conllu
+conllu>=4.4
 scikit-learn
 numpy
 torch
-sys
 python-dotenv
+tqdm
