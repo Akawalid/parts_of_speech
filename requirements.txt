@@ -1,0 +1,6 @@
+conllu>=4.4
+scikit-learn
+numpy
+torch
+python-dotenv
+tqdm
