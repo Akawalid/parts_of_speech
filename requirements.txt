@@ -1,6 +1,0 @@
-conllu
-scikit-learn
-numpy
-torch
-sys
-python-dotenv
