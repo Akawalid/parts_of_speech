@@ -113,12 +113,9 @@ class ResultsAnalyzer:
         print(f"Results directory: {run_dir}")
         
         # List subdirectories
-        metrics_dir = run_dir / "metrics"
         logs_dir = run_dir / "logs"
         models_dir = run_dir / "models"
         
-        if metrics_dir.exists():
-            print(f"  Metrics: {len(list(metrics_dir.glob('*')))} files")
         if logs_dir.exists():
             print(f"  Logs: {len(list(logs_dir.glob('*')))} files")
         if models_dir.exists():

@@ -1,0 +1,60 @@
+{
+  "timestamp": "20260212_221418",
+  "languages": {
+    "en": {
+      "status": "completed",
+      "language": "en",
+      "language_name": "English",
+      "elapsed_time_seconds": 322.38380575180054,
+      "elapsed_time_minutes": 5.37,
+      "timestamp": "2026-02-12T22:19:40.597336"
+    },
+    "fr": {
+      "status": "completed",
+      "language": "fr",
+      "language_name": "French",
+      "elapsed_time_seconds": 307.26269721984863,
+      "elapsed_time_minutes": 5.12,
+      "timestamp": "2026-02-12T22:24:47.860033"
+    },
+    "de": {
+      "status": "completed",
+      "language": "de",
+      "language_name": "German",
+      "elapsed_time_seconds": 174.13462662696838,
+      "elapsed_time_minutes": 2.9,
+      "timestamp": "2026-02-12T22:27:41.994660"
+    },
+    "es": {
+      "status": "completed",
+      "language": "es",
+      "language_name": "Spanish",
+      "elapsed_time_seconds": 383.2874732017517,
+      "elapsed_time_minutes": 6.39,
+      "timestamp": "2026-02-12T22:34:05.283640"
+    },
+    "zh": {
+      "status": "completed",
+      "language": "zh",
+      "language_name": "Chinese",
+      "elapsed_time_seconds": 76.58179140090942,
+      "elapsed_time_minutes": 1.28,
+      "timestamp": "2026-02-12T22:35:21.865949"
+    }
+  },
+  "summary": {
+    "total_languages": 5,
+    "successful_trainings": 5,
+    "failed_trainings": 0,
+    "total_training_time_seconds": 1263.6503942012787,
+    "total_training_time_hours": 0.35,
+    "successful_languages": [
+      "en",
+      "fr",
+      "de",
+      "es",
+      "zh"
+    ],
+    "failed_languages": []
+  }
+}
