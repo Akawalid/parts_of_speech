@@ -10,9 +10,11 @@ from model import create_model
 from data import load_data_and_dataloaders
 from evaluate import POSEvaluator, train_and_evaluate_epoch
 import config
+import json
+from pathlib import Path
 
 
-def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARNING_RATE):
+def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARNING_RATE, run_dir=None):
     """
     Main training function for multi-lingual POS tagging.
     
@@ -34,9 +36,18 @@ def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARN
     print(f"Training on {config.LANGUAGES[language]['name']} data")
     print()
     
-    # Create model directory
-    os.makedirs(config.MODELS_DIR, exist_ok=True)
-    os.makedirs(config.CHECKPOINTS_DIR, exist_ok=True)
+    if run_dir is not None:
+        run_dir = Path(run_dir)
+        models_dir = run_dir / "models"
+        logs_dir = run_dir / "logs"
+    else:
+        models_dir = Path(config.MODELS_DIR)
+        logs_dir = Path(config.LOGS_DIR)
+    
+    #create directories for models and logs
+    models_dir.mkdir(parents=True, exist_ok=True)
+    logs_dir.mkdir(parents=True, exist_ok=True)
+
     
     # Load data
     print("=" * 60)
@@ -73,6 +84,8 @@ def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARN
     best_dev_f1 = 0.0
     patience_counter = 0
     
+    #recording metrics for each epoch
+    epoch_history = []
     for epoch in range(num_epochs):
         print(f"\nEpoch {epoch + 1}/{num_epochs}")
         print("-" * 60)
@@ -82,7 +95,17 @@ def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARN
             model, train_loader, dev_loader, optimizer, device, 
             criterion=criterion, use_crf=config.USE_CRF
         )
-        
+
+        record = {
+            "epoch": epoch + 1,
+            "train_loss": float(train_loss),
+            "dev_accuracy": float(dev_metrics["accuracy"]),
+            "dev_f1": float(dev_metrics["f1"]),
+            "dev_precision": float(dev_metrics["precision"]),
+            "dev_recall": float(dev_metrics["recall"]),
+        }
+        epoch_history.append(record)
+
         dev_f1 = dev_metrics['f1']
         dev_acc = dev_metrics['accuracy']
         
@@ -98,10 +121,8 @@ def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARN
             patience_counter = 0
             
             # Save best model
-            model_path = os.path.join(
-                config.MODELS_DIR,
-                config.MODEL_NAME_TEMPLATE.format(language=language, epoch=epoch+1)
-            )
+            model_path = models_dir / config.MODEL_NAME_TEMPLATE.format(
+                language=language, epoch=epoch+1)
             torch.save(model.state_dict(), model_path)
             print(f"✓ Model saved to {model_path}")
         else:
@@ -110,6 +131,9 @@ def main(language='en', num_epochs=config.NUM_EPOCHS, learning_rate=config.LEARN
                 print(f"\n⚠ Early stopping after {config.EARLY_STOPPING_PATIENCE} epochs without improvement")
                 break
     
+    metrics_path = logs_dir / f"{language}_epoch_metrics.json"
+    with open(metrics_path, "w") as f:
+        json.dump(epoch_history, f, indent=2)
     # Evaluate on test set
     print("\n" + "=" * 60)
     print("FINAL EVALUATION ON TEST SET")

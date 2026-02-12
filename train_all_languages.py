@@ -53,7 +53,7 @@ class MultiLanguageTrainer:
         
         try:
             # Train the language
-            train_single_language(language=language)
+            train_single_language(language=language, run_dir=self.run_dir)
             
             elapsed_time = time.time() - start_time
             
