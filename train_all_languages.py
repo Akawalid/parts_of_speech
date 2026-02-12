@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-# Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 from dotenv import load_dotenv
@@ -20,21 +19,17 @@ class MultiLanguageTrainer:
         self.results_dir = Path("results")
         self.results_dir.mkdir(exist_ok=True)
         
-        # Create timestamped subdirectory for this run
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.run_dir = self.results_dir / self.timestamp
         self.run_dir.mkdir(exist_ok=True)
         
-        # Create subdirectories
         self.metrics_dir = self.run_dir / "metrics"
         self.logs_dir = self.run_dir / "logs"
-        self.models_dir = self.run_dir / "models"
-        
+
         self.metrics_dir.mkdir(exist_ok=True)
         self.logs_dir.mkdir(exist_ok=True)
-        self.models_dir.mkdir(exist_ok=True)
+
         
-        # Summary file
         self.summary_file = self.run_dir / "training_summary.json"
         self.results = {
             'timestamp': self.timestamp,
@@ -52,8 +47,7 @@ class MultiLanguageTrainer:
         start_time = time.time()
         
         try:
-            # Train the language
-            train_single_language(language=language)
+            metrics = train_single_language(language=language)
             
             elapsed_time = time.time() - start_time
             
@@ -66,7 +60,18 @@ class MultiLanguageTrainer:
                 'timestamp': datetime.now().isoformat()
             }
             
+            if metrics:
+                result['training_history'] = metrics['training_history']
+                result['best_epoch'] = metrics['best_epoch']
+                result['best_dev_f1'] = metrics['best_dev_f1']
+                result['test_metrics'] = metrics['test_metrics']
+            
             print(f"\n{language.upper()} training completed in {elapsed_time/60:.2f} minutes")
+            if metrics:
+                print(f"  Best epoch:    {metrics['best_epoch']}")
+                print(f"  Best dev F1:   {metrics['best_dev_f1']:.4f}")
+                print(f"  Test Accuracy: {metrics['test_metrics']['test_accuracy']:.4f}")
+                print(f"  Test F1:       {metrics['test_metrics']['test_f1']:.4f}")
             
         except Exception as e:
             elapsed_time = time.time() - start_time
@@ -94,7 +99,6 @@ class MultiLanguageTrainer:
         print(f"Languages: {', '.join(languages)}")
         print(f"Results saved to: {self.run_dir}")
         
-        # Train each language
         for lang in languages:
             if lang not in config.LANGUAGES:
                 print(f"WARNING: Language '{lang}' not supported. Skipping.")
@@ -103,7 +107,6 @@ class MultiLanguageTrainer:
             result = self.train_language(lang)
             self.results['languages'][lang] = result
         
-        # Generate summary
         self._generate_summary()
         self._save_results()
     
@@ -115,6 +118,14 @@ class MultiLanguageTrainer:
         
         total_time = sum(r.get('elapsed_time_seconds', 0) for r in results.values())
         
+        avg_metrics = {}
+        if successful:
+            metrics_keys = ['test_accuracy', 'test_precision', 'test_recall', 'test_f1']
+            for key in metrics_keys:
+                values = [r['test_metrics'][key] for r in successful if 'test_metrics' in r]
+                if values:
+                    avg_metrics[f'avg_{key}'] = round(sum(values) / len(values), 4)
+        
         self.results['summary'] = {
             'total_languages': len(results),
             'successful_trainings': len(successful),
@@ -123,11 +134,27 @@ class MultiLanguageTrainer:
             'total_training_time_hours': round(total_time / 3600, 2),
             'successful_languages': [r['language'] for r in successful],
             'failed_languages': [r['language'] for r in failed],
+            **avg_metrics
         }
     
     def _save_results(self):
         with open(self.summary_file, 'w') as f:
             json.dump(self.results, f, indent=2)
+        
+        for lang, result in self.results['languages'].items():
+            if result['status'] == 'completed':
+                metrics_data = {
+                    'language': lang,
+                    'language_name': result['language_name'],
+                    'training_history': result.get('training_history', {}),
+                    'best_epoch': result.get('best_epoch'),
+                    'best_dev_f1': result.get('best_dev_f1'),
+                    'test_metrics': result.get('test_metrics', {})
+                }
+                
+                metrics_file = self.metrics_dir / f"{lang}_metrics.json"
+                with open(metrics_file, 'w') as f:
+                    json.dump(metrics_data, f, indent=2)
         
         print(f"\n{'='*70}")
         print(f"TRAINING SUMMARY")
@@ -136,6 +163,14 @@ class MultiLanguageTrainer:
         print(f"Successful: {self.results['summary']['successful_trainings']}")
         print(f"Failed: {self.results['summary']['failed_trainings']}")
         print(f"Total time: {self.results['summary']['total_training_time_hours']} hours")
+        
+        if 'avg_test_f1' in self.results['summary']:
+            print(f"\nAverage metrics across languages:")
+            print(f"  Accuracy:  {self.results['summary']['avg_test_accuracy']:.4f}")
+            print(f"  Precision: {self.results['summary']['avg_test_precision']:.4f}")
+            print(f"  Recall:    {self.results['summary']['avg_test_recall']:.4f}")
+            print(f"  F1:        {self.results['summary']['avg_test_f1']:.4f}")
+        
         print(f"\nSuccessful: {', '.join(self.results['summary']['successful_languages'])}")
         if self.results['summary']['failed_languages']:
             print(f"Failed: {', '.join(self.results['summary']['failed_languages'])}")

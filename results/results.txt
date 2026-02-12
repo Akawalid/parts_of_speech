@@ -1,0 +1,1023 @@
+======================================================================
+Training on ENGLISH
+======================================================================
+Using device: cuda
+Training on English data
+
+============================================================
+LOADING DATA
+============================================================
+Loading English dataset...
+  Train sentences: 12544
+  Dev sentences: 2001
+  Test sentences: 2077
+Building vocabularies...
+  Vocabulary size: 8867
+  POS tags: 18
+  Character vocabulary: 83
+
+============================================================
+BUILDING MODEL
+============================================================
+Model parameters: 6,132,929
+
+============================================================
+TRAINING
+============================================================
+
+Epoch 1/20
+------------------------------------------------------------
+Train Loss:  1.1585
+Dev Acc:     0.8373
+Dev F1:      0.7186
+Dev Prec:    0.8048
+Dev Recall:  0.7173
+✓ Model saved to models/en_pos_tagger_epoch1.pt
+
+Epoch 2/20
+------------------------------------------------------------
+Train Loss:  0.4609
+Dev Acc:     0.8944
+Dev F1:      0.8136
+Dev Prec:    0.8485
+Dev Recall:  0.7981
+✓ Model saved to models/en_pos_tagger_epoch2.pt
+
+Epoch 3/20
+------------------------------------------------------------
+Train Loss:  0.3419
+Dev Acc:     0.9178
+Dev F1:      0.8447
+Dev Prec:    0.8682
+Dev Recall:  0.8302
+✓ Model saved to models/en_pos_tagger_epoch3.pt
+
+Epoch 4/20
+------------------------------------------------------------
+Train Loss:  0.2735
+Dev Acc:     0.9149
+Dev F1:      0.8423
+Dev Prec:    0.8767
+Dev Recall:  0.8299
+
+Epoch 5/20
+------------------------------------------------------------
+Train Loss:  0.2295
+Dev Acc:     0.9266
+Dev F1:      0.8557
+Dev Prec:    0.8857
+Dev Recall:  0.8384
+✓ Model saved to models/en_pos_tagger_epoch5.pt
+
+Epoch 6/20
+------------------------------------------------------------
+Train Loss:  0.1976
+Dev Acc:     0.9342
+Dev F1:      0.8734
+Dev Prec:    0.8934
+Dev Recall:  0.8613
+✓ Model saved to models/en_pos_tagger_epoch6.pt
+
+Epoch 7/20
+------------------------------------------------------------
+Train Loss:  0.1712
+Dev Acc:     0.9379
+Dev F1:      0.8688
+Dev Prec:    0.9028
+Dev Recall:  0.8520
+
+Epoch 8/20
+------------------------------------------------------------
+Train Loss:  0.1520
+Dev Acc:     0.9376
+Dev F1:      0.8693
+Dev Prec:    0.9052
+Dev Recall:  0.8678
+
+Epoch 9/20
+------------------------------------------------------------
+Train Loss:  0.1380
+Dev Acc:     0.9374
+Dev F1:      0.8697
+Dev Prec:    0.9355
+Dev Recall:  0.8619
+
+Epoch 10/20
+------------------------------------------------------------
+Train Loss:  0.1266
+Dev Acc:     0.9399
+Dev F1:      0.8683
+Dev Prec:    0.8805
+Dev Recall:  0.8592
+
+Epoch 11/20
+------------------------------------------------------------
+Train Loss:  0.1175
+Dev Acc:     0.9380
+Dev F1:      0.8803
+Dev Prec:    0.8999
+Dev Recall:  0.8683
+✓ Model saved to models/en_pos_tagger_epoch11.pt
+
+Epoch 12/20
+------------------------------------------------------------
+Train Loss:  0.1068
+Dev Acc:     0.9374
+Dev F1:      0.8738
+Dev Prec:    0.8857
+Dev Recall:  0.8692
+
+Epoch 13/20
+------------------------------------------------------------
+Train Loss:  0.0995
+Dev Acc:     0.9393
+Dev F1:      0.8797
+Dev Prec:    0.9030
+Dev Recall:  0.8696
+
+Epoch 14/20
+------------------------------------------------------------
+Train Loss:  0.0924
+Dev Acc:     0.9407
+Dev F1:      0.8697
+Dev Prec:    0.8771
+Dev Recall:  0.8651
+
+Epoch 15/20
+------------------------------------------------------------
+Train Loss:  0.0881
+Dev Acc:     0.9379
+Dev F1:      0.8752
+Dev Prec:    0.9094
+Dev Recall:  0.8665
+
+Epoch 16/20
+------------------------------------------------------------
+Train Loss:  0.0836
+Dev Acc:     0.9385
+Dev F1:      0.8848
+Dev Prec:    0.8913
+Dev Recall:  0.8806
+✓ Model saved to models/en_pos_tagger_epoch16.pt
+
+Epoch 17/20
+------------------------------------------------------------
+Train Loss:  0.0770
+Dev Acc:     0.9366
+Dev F1:      0.8714
+Dev Prec:    0.8971
+Dev Recall:  0.8768
+
+Epoch 18/20
+------------------------------------------------------------
+Train Loss:  0.0715
+Dev Acc:     0.9409
+Dev F1:      0.8732
+Dev Prec:    0.8734
+Dev Recall:  0.8739
+
+Epoch 19/20
+------------------------------------------------------------
+Train Loss:  0.0685
+Dev Acc:     0.9394
+Dev F1:      0.8916
+Dev Prec:    0.9157
+Dev Recall:  0.8795
+✓ Model saved to models/en_pos_tagger_epoch19.pt
+
+Epoch 20/20
+------------------------------------------------------------
+Train Loss:  0.0640
+Dev Acc:     0.9397
+Dev F1:      0.8854
+Dev Prec:    0.9016
+Dev Recall:  0.8783
+
+============================================================
+FINAL EVALUATION ON TEST SET
+============================================================
+Test Accuracy:  0.9426
+Test Precision: 0.8824
+Test Recall:    0.8865
+Test F1:        0.8818
+
+Per-tag F1 scores:
+  PUNCT       : 0.9924
+  CCONJ       : 0.9918
+  DET         : 0.9908
+  AUX         : 0.9903
+  PRON        : 0.9891
+  PART        : 0.9815
+  ADP         : 0.9641
+  VERB        : 0.9508
+  NUM         : 0.9401
+  ADV         : 0.9282
+  ADJ         : 0.9093
+  SCONJ       : 0.9091
+  NOUN        : 0.9018
+  INTJ        : 0.8477
+  SYM         : 0.8400
+  PROPN       : 0.8237
+  X           : 0.0400
+
+EN training completed in 2.87 minutes
+
+======================================================================
+Training on FRENCH
+======================================================================
+Using device: cuda
+Training on French data
+
+============================================================
+LOADING DATA
+============================================================
+Loading French dataset...
+  Train sentences: 14450
+  Dev sentences: 1476
+  Test sentences: 416
+Building vocabularies...
+  Vocabulary size: 16035
+  POS tags: 17
+  Character vocabulary: 244
+
+============================================================
+BUILDING MODEL
+============================================================
+Model parameters: 7,975,474
+
+============================================================
+TRAINING
+============================================================
+
+Epoch 1/20
+------------------------------------------------------------
+Train Loss:  0.8638
+Dev Acc:     0.9123
+Dev F1:      0.7928
+Dev Prec:    0.8387
+Dev Recall:  0.7778
+✓ Model saved to models/fr_pos_tagger_epoch1.pt
+
+Epoch 2/20
+------------------------------------------------------------
+Train Loss:  0.3008
+Dev Acc:     0.9457
+Dev F1:      0.8461
+Dev Prec:    0.8728
+Dev Recall:  0.8321
+✓ Model saved to models/fr_pos_tagger_epoch2.pt
+
+Epoch 3/20
+------------------------------------------------------------
+Train Loss:  0.2201
+Dev Acc:     0.9541
+Dev F1:      0.8481
+Dev Prec:    0.8678
+Dev Recall:  0.8459
+✓ Model saved to models/fr_pos_tagger_epoch3.pt
+
+Epoch 4/20
+------------------------------------------------------------
+Train Loss:  0.1804
+Dev Acc:     0.9604
+Dev F1:      0.8635
+Dev Prec:    0.8899
+Dev Recall:  0.8508
+✓ Model saved to models/fr_pos_tagger_epoch4.pt
+
+Epoch 5/20
+------------------------------------------------------------
+Train Loss:  0.1508
+Dev Acc:     0.9625
+Dev F1:      0.8669
+Dev Prec:    0.8654
+Dev Recall:  0.8692
+✓ Model saved to models/fr_pos_tagger_epoch5.pt
+
+Epoch 6/20
+------------------------------------------------------------
+Train Loss:  0.1285
+Dev Acc:     0.9665
+Dev F1:      0.8674
+Dev Prec:    0.8880
+Dev Recall:  0.8594
+✓ Model saved to models/fr_pos_tagger_epoch6.pt
+
+Epoch 7/20
+------------------------------------------------------------
+Train Loss:  0.1091
+Dev Acc:     0.9650
+Dev F1:      0.8707
+Dev Prec:    0.8874
+Dev Recall:  0.8614
+✓ Model saved to models/fr_pos_tagger_epoch7.pt
+
+Epoch 8/20
+------------------------------------------------------------
+Train Loss:  0.0981
+Dev Acc:     0.9696
+Dev F1:      0.8924
+Dev Prec:    0.9593
+Dev Recall:  0.8739
+✓ Model saved to models/fr_pos_tagger_epoch8.pt
+
+Epoch 9/20
+------------------------------------------------------------
+Train Loss:  0.0881
+Dev Acc:     0.9660
+Dev F1:      0.8939
+Dev Prec:    0.9400
+Dev Recall:  0.8860
+✓ Model saved to models/fr_pos_tagger_epoch9.pt
+
+Epoch 10/20
+------------------------------------------------------------
+Train Loss:  0.0804
+Dev Acc:     0.9676
+Dev F1:      0.8929
+Dev Prec:    0.9378
+Dev Recall:  0.8879
+
+Epoch 11/20
+------------------------------------------------------------
+Train Loss:  0.0729
+Dev Acc:     0.9689
+Dev F1:      0.8926
+Dev Prec:    0.9502
+Dev Recall:  0.8764
+
+Epoch 12/20
+------------------------------------------------------------
+Train Loss:  0.0677
+Dev Acc:     0.9674
+Dev F1:      0.8735
+Dev Prec:    0.8792
+Dev Recall:  0.8690
+
+Epoch 13/20
+------------------------------------------------------------
+Train Loss:  0.0634
+Dev Acc:     0.9683
+Dev F1:      0.9060
+Dev Prec:    0.9422
+Dev Recall:  0.8915
+✓ Model saved to models/fr_pos_tagger_epoch13.pt
+
+Epoch 14/20
+------------------------------------------------------------
+Train Loss:  0.0586
+Dev Acc:     0.9673
+Dev F1:      0.8922
+Dev Prec:    0.9080
+Dev Recall:  0.8881
+
+Epoch 15/20
+------------------------------------------------------------
+Train Loss:  0.0542
+Dev Acc:     0.9679
+Dev F1:      0.9129
+Dev Prec:    0.9231
+Dev Recall:  0.9073
+✓ Model saved to models/fr_pos_tagger_epoch15.pt
+
+Epoch 16/20
+------------------------------------------------------------
+Train Loss:  0.0509
+Dev Acc:     0.9672
+Dev F1:      0.9046
+Dev Prec:    0.9156
+Dev Recall:  0.9028
+
+Epoch 17/20
+------------------------------------------------------------
+Train Loss:  0.0474
+Dev Acc:     0.9681
+Dev F1:      0.9086
+Dev Prec:    0.9438
+Dev Recall:  0.8948
+
+Epoch 18/20
+------------------------------------------------------------
+Train Loss:  0.0442
+Dev Acc:     0.9682
+Dev F1:      0.9148
+Dev Prec:    0.9324
+Dev Recall:  0.9084
+✓ Model saved to models/fr_pos_tagger_epoch18.pt
+
+Epoch 19/20
+------------------------------------------------------------
+Train Loss:  0.0410
+Dev Acc:     0.9679
+Dev F1:      0.9057
+Dev Prec:    0.9431
+Dev Recall:  0.8905
+
+Epoch 20/20
+------------------------------------------------------------
+Train Loss:  0.0388
+Dev Acc:     0.9673
+Dev F1:      0.9056
+Dev Prec:    0.9237
+Dev Recall:  0.8948
+
+============================================================
+FINAL EVALUATION ON TEST SET
+============================================================
+Test Accuracy:  0.9691
+Test Precision: 0.9216
+Test Recall:    0.8933
+Test F1:        0.9053
+
+Per-tag F1 scores:
+  PUNCT       : 1.0000
+  CCONJ       : 0.9980
+  ADP         : 0.9939
+  DET         : 0.9936
+  PRON        : 0.9875
+  AUX         : 0.9834
+  ADV         : 0.9784
+  NUM         : 0.9696
+  NOUN        : 0.9607
+  SCONJ       : 0.9603
+  VERB        : 0.9564
+  SYM         : 0.9459
+  ADJ         : 0.9152
+  PROPN       : 0.8486
+  INTJ        : 0.6667
+  X           : 0.3265
+
+FR training completed in 3.92 minutes
+
+======================================================================
+Training on GERMAN
+======================================================================
+Using device: cuda
+Training on German data
+
+============================================================
+LOADING DATA
+============================================================
+Loading German dataset...
+  Train sentences: 13813
+  Dev sentences: 799
+  Test sentences: 977
+Building vocabularies...
+  Vocabulary size: 14712
+  POS tags: 18
+  Character vocabulary: 197
+
+============================================================
+BUILDING MODEL
+============================================================
+Model parameters: 7,634,949
+
+============================================================
+TRAINING
+============================================================
+
+Epoch 1/20
+------------------------------------------------------------
+Train Loss:  1.0207
+Dev Acc:     0.8549
+Dev F1:      0.6974
+Dev Prec:    0.6990
+Dev Recall:  0.6989
+✓ Model saved to models/de_pos_tagger_epoch1.pt
+
+Epoch 2/20
+------------------------------------------------------------
+Train Loss:  0.4173
+Dev Acc:     0.9006
+Dev F1:      0.7366
+Dev Prec:    0.7361
+Dev Recall:  0.7392
+✓ Model saved to models/de_pos_tagger_epoch2.pt
+
+Epoch 3/20
+------------------------------------------------------------
+Train Loss:  0.3187
+Dev Acc:     0.9212
+Dev F1:      0.7529
+Dev Prec:    0.7537
+Dev Recall:  0.7530
+✓ Model saved to models/de_pos_tagger_epoch3.pt
+
+Epoch 4/20
+------------------------------------------------------------
+Train Loss:  0.2648
+Dev Acc:     0.9240
+Dev F1:      0.7603
+Dev Prec:    0.8097
+Dev Recall:  0.7634
+✓ Model saved to models/de_pos_tagger_epoch4.pt
+
+Epoch 5/20
+------------------------------------------------------------
+Train Loss:  0.2269
+Dev Acc:     0.9300
+Dev F1:      0.7665
+Dev Prec:    0.8171
+Dev Recall:  0.7676
+✓ Model saved to models/de_pos_tagger_epoch5.pt
+
+Epoch 6/20
+------------------------------------------------------------
+Train Loss:  0.1980
+Dev Acc:     0.9353
+Dev F1:      0.7739
+Dev Prec:    0.8023
+Dev Recall:  0.7705
+✓ Model saved to models/de_pos_tagger_epoch6.pt
+
+Epoch 7/20
+------------------------------------------------------------
+Train Loss:  0.1752
+Dev Acc:     0.9385
+Dev F1:      0.7704
+Dev Prec:    0.7983
+Dev Recall:  0.7646
+
+Epoch 8/20
+------------------------------------------------------------
+Train Loss:  0.1571
+Dev Acc:     0.9394
+Dev F1:      0.7679
+Dev Prec:    0.7664
+Dev Recall:  0.7704
+
+Epoch 9/20
+------------------------------------------------------------
+Train Loss:  0.1439
+Dev Acc:     0.9429
+Dev F1:      0.7851
+Dev Prec:    0.8132
+Dev Recall:  0.7808
+✓ Model saved to models/de_pos_tagger_epoch9.pt
+
+Epoch 10/20
+------------------------------------------------------------
+Train Loss:  0.1327
+Dev Acc:     0.9432
+Dev F1:      0.7771
+Dev Prec:    0.8008
+Dev Recall:  0.7752
+
+Epoch 11/20
+------------------------------------------------------------
+Train Loss:  0.1243
+Dev Acc:     0.9378
+Dev F1:      0.7678
+Dev Prec:    0.7673
+Dev Recall:  0.7697
+
+Epoch 12/20
+------------------------------------------------------------
+Train Loss:  0.1145
+Dev Acc:     0.9447
+Dev F1:      0.7780
+Dev Prec:    0.8011
+Dev Recall:  0.7770
+
+Epoch 13/20
+------------------------------------------------------------
+Train Loss:  0.1092
+Dev Acc:     0.9396
+Dev F1:      0.7731
+Dev Prec:    0.7834
+Dev Recall:  0.7733
+
+Epoch 14/20
+------------------------------------------------------------
+Train Loss:  0.1014
+Dev Acc:     0.9437
+Dev F1:      0.7758
+Dev Prec:    0.7974
+Dev Recall:  0.7761
+
+⚠ Early stopping after 5 epochs without improvement
+
+============================================================
+FINAL EVALUATION ON TEST SET
+============================================================
+Test Accuracy:  0.9371
+Test Precision: 0.8570
+Test Recall:    0.8022
+Test F1:        0.8128
+
+Per-tag F1 scores:
+  PUNCT       : 0.9985
+  DET         : 0.9848
+  ADP         : 0.9844
+  PART        : 0.9739
+  PRON        : 0.9729
+  CCONJ       : 0.9582
+  NUM         : 0.9503
+  AUX         : 0.9457
+  NOUN        : 0.9167
+  ADV         : 0.9164
+  VERB        : 0.9141
+  SCONJ       : 0.9024
+  ADJ         : 0.8727
+  PROPN       : 0.7860
+  SYM         : 0.6667
+  X           : 0.0741
+  INTJ        : 0.0000
+
+DE training completed in 2.12 minutes
+
+======================================================================
+Training on SPANISH
+======================================================================
+Using device: cuda
+Training on Spanish data
+
+============================================================
+LOADING DATA
+============================================================
+Loading Spanish dataset...
+  Train sentences: 14287
+  Dev sentences: 1654
+  Test sentences: 1721
+Building vocabularies...
+  Vocabulary size: 17833
+  POS tags: 18
+  Character vocabulary: 78
+
+============================================================
+BUILDING MODEL
+============================================================
+Model parameters: 8,427,975
+
+============================================================
+TRAINING
+============================================================
+
+Epoch 1/20
+------------------------------------------------------------
+Train Loss:  0.7841
+Dev Acc:     0.9218
+Dev F1:      0.8021
+Dev Prec:    0.8076
+Dev Recall:  0.7979
+✓ Model saved to models/es_pos_tagger_epoch1.pt
+
+Epoch 2/20
+------------------------------------------------------------
+Train Loss:  0.2694
+Dev Acc:     0.9492
+Dev F1:      0.8261
+Dev Prec:    0.8312
+Dev Recall:  0.8223
+✓ Model saved to models/es_pos_tagger_epoch2.pt
+
+Epoch 3/20
+------------------------------------------------------------
+Train Loss:  0.1966
+Dev Acc:     0.9545
+Dev F1:      0.8902
+Dev Prec:    0.8932
+Dev Recall:  0.8890
+✓ Model saved to models/es_pos_tagger_epoch3.pt
+
+Epoch 4/20
+------------------------------------------------------------
+Train Loss:  0.1570
+Dev Acc:     0.9637
+Dev F1:      0.9067
+Dev Prec:    0.9615
+Dev Recall:  0.8989
+✓ Model saved to models/es_pos_tagger_epoch4.pt
+
+Epoch 5/20
+------------------------------------------------------------
+Train Loss:  0.1309
+Dev Acc:     0.9671
+Dev F1:      0.9386
+Dev Prec:    0.9388
+Dev Recall:  0.9417
+✓ Model saved to models/es_pos_tagger_epoch5.pt
+
+Epoch 6/20
+------------------------------------------------------------
+Train Loss:  0.1123
+Dev Acc:     0.9687
+Dev F1:      0.9421
+Dev Prec:    0.9406
+Dev Recall:  0.9468
+✓ Model saved to models/es_pos_tagger_epoch6.pt
+
+Epoch 7/20
+------------------------------------------------------------
+Train Loss:  0.0967
+Dev Acc:     0.9711
+Dev F1:      0.9545
+Dev Prec:    0.9536
+Dev Recall:  0.9569
+✓ Model saved to models/es_pos_tagger_epoch7.pt
+
+Epoch 8/20
+------------------------------------------------------------
+Train Loss:  0.0854
+Dev Acc:     0.9701
+Dev F1:      0.9460
+Dev Prec:    0.9449
+Dev Recall:  0.9495
+
+Epoch 9/20
+------------------------------------------------------------
+Train Loss:  0.0764
+Dev Acc:     0.9713
+Dev F1:      0.9339
+Dev Prec:    0.9253
+Dev Recall:  0.9521
+
+Epoch 10/20
+------------------------------------------------------------
+Train Loss:  0.0701
+Dev Acc:     0.9724
+Dev F1:      0.9496
+Dev Prec:    0.9463
+Dev Recall:  0.9573
+
+Epoch 11/20
+------------------------------------------------------------
+Train Loss:  0.0636
+Dev Acc:     0.9707
+Dev F1:      0.9429
+Dev Prec:    0.9377
+Dev Recall:  0.9561
+
+Epoch 12/20
+------------------------------------------------------------
+Train Loss:  0.0585
+Dev Acc:     0.9711
+Dev F1:      0.9468
+Dev Prec:    0.9455
+Dev Recall:  0.9502
+
+⚠ Early stopping after 5 epochs without improvement
+
+============================================================
+FINAL EVALUATION ON TEST SET
+============================================================
+Test Accuracy:  0.9707
+Test Precision: 0.9474
+Test Recall:    0.9098
+Test F1:        0.9242
+
+Per-tag F1 scores:
+  PUNCT       : 1.0000
+  ADP         : 0.9984
+  CCONJ       : 0.9958
+  DET         : 0.9951
+  VERB        : 0.9803
+  AUX         : 0.9788
+  ADV         : 0.9749
+  PRON        : 0.9716
+  NUM         : 0.9664
+  SCONJ       : 0.9580
+  NOUN        : 0.9501
+  ADJ         : 0.9192
+  PROPN       : 0.8948
+  SYM         : 0.8085
+  PART        : 0.7027
+  INTJ        : 0.6923
+  X           : 0.0000
+
+ES training completed in 2.78 minutes
+
+======================================================================
+Training on CHINESE
+======================================================================
+Using device: cuda
+Training on Chinese data
+
+============================================================
+LOADING DATA
+============================================================
+Loading Chinese dataset...
+  Train sentences: 3997
+  Dev sentences: 500
+  Test sentences: 500
+Building vocabularies...
+  Vocabulary size: 7102
+  POS tags: 17
+  Character vocabulary: 3551
+
+============================================================
+BUILDING MODEL
+============================================================
+Model parameters: 5,853,976
+
+============================================================
+TRAINING
+============================================================
+
+Epoch 1/20
+------------------------------------------------------------
+Train Loss:  2.1027
+Dev Acc:     0.5146
+Dev F1:      0.2480
+Dev Prec:    0.3407
+Dev Recall:  0.2540
+✓ Model saved to models/zh_pos_tagger_epoch1.pt
+
+Epoch 2/20
+------------------------------------------------------------
+Train Loss:  1.1647
+Dev Acc:     0.7353
+Dev F1:      0.5740
+Dev Prec:    0.6247
+Dev Recall:  0.5703
+✓ Model saved to models/zh_pos_tagger_epoch2.pt
+
+Epoch 3/20
+------------------------------------------------------------
+Train Loss:  0.7986
+Dev Acc:     0.8087
+Dev F1:      0.6847
+Dev Prec:    0.7783
+Dev Recall:  0.6838
+✓ Model saved to models/zh_pos_tagger_epoch3.pt
+
+Epoch 4/20
+------------------------------------------------------------
+Train Loss:  0.6329
+Dev Acc:     0.8428
+Dev F1:      0.7641
+Dev Prec:    0.7990
+Dev Recall:  0.7527
+✓ Model saved to models/zh_pos_tagger_epoch4.pt
+
+Epoch 5/20
+------------------------------------------------------------
+Train Loss:  0.5255
+Dev Acc:     0.8636
+Dev F1:      0.7906
+Dev Prec:    0.8200
+Dev Recall:  0.7747
+✓ Model saved to models/zh_pos_tagger_epoch5.pt
+
+Epoch 6/20
+------------------------------------------------------------
+Train Loss:  0.4531
+Dev Acc:     0.8756
+Dev F1:      0.8047
+Dev Prec:    0.8256
+Dev Recall:  0.7928
+✓ Model saved to models/zh_pos_tagger_epoch6.pt
+
+Epoch 7/20
+------------------------------------------------------------
+Train Loss:  0.4031
+Dev Acc:     0.8745
+Dev F1:      0.8054
+Dev Prec:    0.8098
+Dev Recall:  0.8069
+✓ Model saved to models/zh_pos_tagger_epoch7.pt
+
+Epoch 8/20
+------------------------------------------------------------
+Train Loss:  0.3645
+Dev Acc:     0.8870
+Dev F1:      0.8172
+Dev Prec:    0.8334
+Dev Recall:  0.8098
+✓ Model saved to models/zh_pos_tagger_epoch8.pt
+
+Epoch 9/20
+------------------------------------------------------------
+Train Loss:  0.3252
+Dev Acc:     0.8923
+Dev F1:      0.8244
+Dev Prec:    0.8373
+Dev Recall:  0.8148
+✓ Model saved to models/zh_pos_tagger_epoch9.pt
+
+Epoch 10/20
+------------------------------------------------------------
+Train Loss:  0.2999
+Dev Acc:     0.8974
+Dev F1:      0.8591
+Dev Prec:    0.8993
+Dev Recall:  0.8428
+✓ Model saved to models/zh_pos_tagger_epoch10.pt
+
+Epoch 11/20
+------------------------------------------------------------
+Train Loss:  0.2785
+Dev Acc:     0.9024
+Dev F1:      0.8843
+Dev Prec:    0.9071
+Dev Recall:  0.8688
+✓ Model saved to models/zh_pos_tagger_epoch11.pt
+
+Epoch 12/20
+------------------------------------------------------------
+Train Loss:  0.2578
+Dev Acc:     0.8978
+Dev F1:      0.8831
+Dev Prec:    0.9016
+Dev Recall:  0.8711
+
+Epoch 13/20
+------------------------------------------------------------
+Train Loss:  0.2384
+Dev Acc:     0.9031
+Dev F1:      0.8875
+Dev Prec:    0.9102
+Dev Recall:  0.8714
+✓ Model saved to models/zh_pos_tagger_epoch13.pt
+
+Epoch 14/20
+------------------------------------------------------------
+Train Loss:  0.2200
+Dev Acc:     0.9060
+Dev F1:      0.8898
+Dev Prec:    0.9196
+Dev Recall:  0.8689
+✓ Model saved to models/zh_pos_tagger_epoch14.pt
+
+Epoch 15/20
+------------------------------------------------------------
+Train Loss:  0.2056
+Dev Acc:     0.9034
+Dev F1:      0.8878
+Dev Prec:    0.9047
+Dev Recall:  0.8765
+
+Epoch 16/20
+------------------------------------------------------------
+Train Loss:  0.1941
+Dev Acc:     0.9041
+Dev F1:      0.8880
+Dev Prec:    0.9070
+Dev Recall:  0.8750
+
+Epoch 17/20
+------------------------------------------------------------
+Train Loss:  0.1817
+Dev Acc:     0.9015
+Dev F1:      0.8878
+Dev Prec:    0.9091
+Dev Recall:  0.8727
+
+Epoch 18/20
+------------------------------------------------------------
+Train Loss:  0.1679
+Dev Acc:     0.9059
+Dev F1:      0.8892
+Dev Prec:    0.9126
+Dev Recall:  0.8726
+
+Epoch 19/20
+------------------------------------------------------------
+Train Loss:  0.1610
+Dev Acc:     0.9079
+Dev F1:      0.8881
+Dev Prec:    0.9043
+Dev Recall:  0.8766
+
+⚠ Early stopping after 5 epochs without improvement
+
+============================================================
+FINAL EVALUATION ON TEST SET
+============================================================
+Test Accuracy:  0.9153
+Test Precision: 0.9220
+Test Recall:    0.9097
+Test F1:        0.9153
+
+Per-tag F1 scores:
+  SYM         : 1.0000
+  PUNCT       : 0.9997
+  NUM         : 0.9886
+  PRON        : 0.9701
+  X           : 0.9591
+  AUX         : 0.9517
+  CCONJ       : 0.9227
+  DET         : 0.9151
+  NOUN        : 0.9119
+  PART        : 0.9090
+  PROPN       : 0.8895
+  SCONJ       : 0.8854
+  ADV         : 0.8849
+  ADP         : 0.8827
+  VERB        : 0.8678
+  ADJ         : 0.7059
+
+ZH training completed in 0.94 minutes
+
+======================================================================
+TRAINING SUMMARY
+======================================================================
+Total languages trained: 5
+Successful: 5
+Failed: 0
+Total time: 0.21 hours
+
+Successful: en, fr, de, es, zh
+
+Results saved to: results/20260212_142548/training_summary.json
+======================================================================

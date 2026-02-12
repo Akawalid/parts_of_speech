@@ -67,7 +67,7 @@ class MultiHeadAttention(nn.Module):
         K = K.view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
         V = V.view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
         
-        scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.head_dim, dtype=torch.float))
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(self.head_dim, dtype=torch.float32))
         
         if mask is not None:
             scores = scores.masked_fill(mask == 0, float("-1e10"))
@@ -84,87 +84,100 @@ class MultiHeadAttention(nn.Module):
 
 
 class CRFLayer(nn.Module):
-    
     def __init__(self, num_tags: int):
         super().__init__()
         self.num_tags = num_tags
-        
+
         self.transitions = nn.Parameter(torch.randn(num_tags, num_tags))
-        
-        self.start_tag_idx = num_tags - 2
-        self.end_tag_idx = num_tags - 1
-        
-    def forward(self, emissions: torch.Tensor, tags: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-        """Calculate CRF loss."""
-        return -self._score(emissions, tags, mask) + self._partition_function(emissions, mask)
-    
-    def _score(self, emissions: torch.Tensor, tags: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-        """Score a given sequence."""
-        score = torch.zeros(emissions.shape[0], device=emissions.device)
-        
-        for i in range(emissions.shape[1]):
-            if i == 0:
-                score += self.transitions[self.start_tag_idx, tags[:, i]]
-            else:
-                score += self.transitions[tags[:, i-1], tags[:, i]]
-            
-            score += emissions[range(emissions.shape[0]), i, tags[:, i]]
-        
-        score += self.transitions[tags[:, -1], self.end_tag_idx]
+        self.start_transitions = nn.Parameter(torch.randn(num_tags))
+        self.end_transitions = nn.Parameter(torch.randn(num_tags))
+
+    def forward(self, emissions, tags, mask):
+        log_likelihood = self._log_likelihood(emissions, tags, mask)
+        return -log_likelihood.mean()
+
+    def _log_likelihood(self, emissions, tags, mask):
+        numerator = self._score_sentence(emissions, tags, mask)
+        denominator = self._compute_partition(emissions, mask)
+        return numerator - denominator
+
+    def _score_sentence(self, emissions, tags, mask):
+        batch_size, seq_len, _ = emissions.shape
+
+        score = self.start_transitions[tags[:, 0]]
+        score += emissions[torch.arange(batch_size), 0, tags[:, 0]]
+
+        for t in range(1, seq_len):
+            transition_score = self.transitions[
+                tags[:, t - 1], tags[:, t]
+            ]
+            emission_score = emissions[torch.arange(batch_size), t, tags[:, t]]
+
+            score += (transition_score + emission_score) * mask[:, t]
+
+        seq_ends = mask.sum(1).long() - 1
+        last_tags = tags.gather(1, seq_ends.unsqueeze(1)).squeeze(1)
+        score += self.end_transitions[last_tags]
+
         return score
-    
-    def _partition_function(self, emissions: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-        """Calculate partition function."""
+
+    def _compute_partition(self, emissions, mask):
         batch_size, seq_len, num_tags = emissions.shape
-        
-        viterbi = emissions[:, 0] + self.transitions[self.start_tag_idx, :num_tags-2]
-        
-        for i in range(1, seq_len):
-            next_viterbi = torch.zeros_like(viterbi)
-            
-            for j in range(num_tags - 2):
-                next_viterbi[:, j] = torch.logsumexp(
-                    viterbi + self.transitions[:num_tags-2, j].unsqueeze(0),
-                    dim=1
-                ) + emissions[:, i, j]
-            
-            viterbi = next_viterbi
-        
-        viterbi += self.transitions[:num_tags-2, self.end_tag_idx].unsqueeze(0)
-        return torch.logsumexp(viterbi, dim=1)
-    
-    def decode(self, emissions: torch.Tensor) -> List[List[int]]:
-        """Viterbi decoding."""
+
+        alpha = self.start_transitions + emissions[:, 0]
+
+        for t in range(1, seq_len):
+            emission = emissions[:, t].unsqueeze(2)
+            transition = self.transitions.unsqueeze(0)
+            alpha_exp = alpha.unsqueeze(1)
+
+            scores = alpha_exp + transition + emission
+            new_alpha = torch.logsumexp(scores, dim=2)
+
+            alpha = torch.where(
+                mask[:, t].unsqueeze(1).bool(),
+                new_alpha,
+                alpha
+            )
+
+        alpha += self.end_transitions
+        return torch.logsumexp(alpha, dim=1)
+
+    def decode(self, emissions, mask):
         batch_size, seq_len, num_tags = emissions.shape
+
+        viterbi = self.start_transitions + emissions[:, 0]
+        backpointers = []
+
+        for t in range(1, seq_len):
+            broadcast_viterbi = viterbi.unsqueeze(2)
+            broadcast_trans = self.transitions.unsqueeze(0)
+
+            scores = broadcast_viterbi + broadcast_trans
+            best_scores, best_paths = scores.max(dim=1)
+
+            viterbi = best_scores + emissions[:, t]
+            backpointers.append(best_paths)
+
+        viterbi += self.end_transitions
+        best_last_tags = viterbi.argmax(dim=1)
+
         best_paths = []
-        
+
         for b in range(batch_size):
-            viterbi = emissions[b, 0] + self.transitions[self.start_tag_idx, :num_tags-2]
-            backpointers = []
-            
-            for i in range(1, seq_len):
-                next_viterbi = torch.zeros(num_tags - 2, device=emissions.device)
-                next_backpointers = torch.zeros(num_tags - 2, dtype=torch.long, device=emissions.device)
-                
-                for j in range(num_tags - 2):
-                    trans_scores = viterbi + self.transitions[:num_tags-2, j]
-                    best_score, best_idx = trans_scores.max(dim=0)
-                    next_viterbi[j] = best_score + emissions[b, i, j]
-                    next_backpointers[j] = best_idx
-                
-                viterbi = next_viterbi
-                backpointers.append(next_backpointers)
-            
-            # Trace back
-            best_path = [viterbi.argmax().item()]
-            for backpointer_step in reversed(backpointers):
-                best_path.append(backpointer_step[best_path[-1]].item())
-            
-            best_paths.append(list(reversed(best_path)))
-        
-        return best_paths
+            seq_len_b = int(mask[b].sum().item())
+            best_tag = int(best_last_tags[b].item())
+            path = [best_tag]
 
+            for backpointer in reversed(backpointers[:seq_len_b - 1]):
+                best_tag = int(backpointer[b][best_tag].item())
+                path.append(best_tag)
 
+            best_paths.append(path[::-1])
+
+        return best_paths    
+
+    
 class SOTABiLSTMPOSTagger(nn.Module):    
     def __init__(self, word_vocab_size: int, char_vocab_size: int, num_tags: int, 
                  embedding_dim: int = config.EMBEDDING_DIM, 

@@ -80,8 +80,8 @@ def load_data_for_languages(data_path, languages=None, batch_size=config.BATCH_S
                 'tag2idx': tag2idx,
                 'char2idx': char2idx,
             }
-            print(f"✓ Successfully loaded {config.LANGUAGES[lang]['name']}")
+            print(f"Successfully loaded {config.LANGUAGES[lang]['name']}")
         except FileNotFoundError as e:
-            print(f"✗ Failed to load {lang}: {e}")
+            print(f"Failed to load {lang}: {e}")
     
     return data_dict
