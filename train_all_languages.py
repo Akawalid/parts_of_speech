@@ -26,11 +26,9 @@ class MultiLanguageTrainer:
         self.run_dir.mkdir(exist_ok=True)
         
         # Create subdirectories
-        self.metrics_dir = self.run_dir / "metrics"
         self.logs_dir = self.run_dir / "logs"
         self.models_dir = self.run_dir / "models"
         
-        self.metrics_dir.mkdir(exist_ok=True)
         self.logs_dir.mkdir(exist_ok=True)
         self.models_dir.mkdir(exist_ok=True)
         
